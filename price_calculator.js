@@ -12,6 +12,16 @@ const PRICES = {
   apple: { unitPrice: 0.89 }
 };
 
+const calculateDiscount = (itemPrices) => {
+  let discount = 0;
+  const items = Object.keys(itemPrices);
+  for (item of items) {
+    const nonDiscountedPrice = PRICES[item].unitPrice * itemPrices[item].quantity;
+    discount += (nonDiscountedPrice - itemPrices[item].price);
+  };
+  return discount.toFixed(2);
+}
+
 const calculatePrices = (itemCount) => {
   const prices = {};
   const items = Object.keys(itemCount);
@@ -60,10 +70,10 @@ const printReceipt = (itemPrices) => {
 
   const items = Object.keys(itemPrices);
   for (item of items) {
-    console.log(`${titleCase(item).padEnd(10, ' ')}      ${itemPrices[item].quantity}         ${itemPrices[item].price}`);
+    console.log(`${titleCase(item).padEnd(10, ' ')}      ${itemPrices[item].quantity}         $${itemPrices[item].price}`);
   }
   console.log(`\nTotal price: $${calculateTotalPrice(itemPrices)}`);
-  console.log('You saved ... ');
+  console.log(`You saved $${calculateDiscount(itemPrices)} today.`);
 }
 
 const titleCase = (string) => {
