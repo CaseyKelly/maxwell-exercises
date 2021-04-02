@@ -38,18 +38,33 @@ const determinePrice = (item, quantity) => {
   if (saleQuantity && (quantity >= saleQuantity)) {
     const fullPriceItems = quantity % saleQuantity;
     const saleItems = Math.floor(quantity / saleQuantity);
-    price += ((saleItems * salePrice) + (fullPriceItems * unitPrice))
+    price += ((saleItems * salePrice) + (fullPriceItems * unitPrice));
   } else {
     price += (unitPrice * quantity);
   }
   return price;
 }
 
+const printReceipt = (itemPrices) => {
+  console.log('\n Item       Quantity      Price');
+  console.log('---------------------------------');
+
+  const items = Object.keys(itemPrices);
+  for (item of items) {
+    console.log(`${titleCase(item).padEnd(10, ' ')}      ${itemPrices[item].quantity}         ${itemPrices[item].price}`);
+  }
+  console.log(`\nTotal price: `);
+  console.log('You saved ... ');
+}
+
+const titleCase = (string) => {
+  return string[0].toUpperCase() + string.slice(1);
+}
+
 rl.question('Please enter all the items purchased separated by a comma: ', (items) => {
   const itemCount = countPurchasedItems(items);
   const itemPrices = calculatePrices(itemCount);
-
-  console.log(itemPrices);
+  printReceipt(itemPrices);
 
   rl.close();
 });
