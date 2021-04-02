@@ -18,9 +18,18 @@ const calculatePrices = (itemCount) => {
   for (item of items) {
     const quantity = itemCount[item];
     prices[item] = { quantity, price: determinePrice(item, quantity) };
-  }
+  };
   return prices;
-}
+};
+
+const calculateTotalPrice = (itemPrices) => {
+  const items = Object.keys(itemPrices);
+  let total = 0;
+  for (item of items) {
+    total += itemPrices[item].price;
+  };
+  return total;
+};
 
 const countPurchasedItems = (items) => {
   let itemCount = {};
@@ -53,7 +62,7 @@ const printReceipt = (itemPrices) => {
   for (item of items) {
     console.log(`${titleCase(item).padEnd(10, ' ')}      ${itemPrices[item].quantity}         ${itemPrices[item].price}`);
   }
-  console.log(`\nTotal price: `);
+  console.log(`\nTotal price: $${calculateTotalPrice(itemPrices)}`);
   console.log('You saved ... ');
 }
 
